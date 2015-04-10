@@ -1,26 +1,28 @@
 package io.dwak.meh
 
 import android.os.Bundle
-import android.support.v7.app.ActionBarActivity
 import android.widget.TextView
 import butterknife.bindView
+import io.dwak.meh.model.CurrentMeh
 import io.dwak.meh.network.MehService
-import retrofit.RestAdapter
 
 
-open class MainActivity : ActionBarActivity(), MainView {
-    val titleView : TextView by bindView(R.id.title)
-    private var mehService : MehService? = null
-
-    override fun populatePage() {
-        throw UnsupportedOperationException()
+open class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
+    override fun setView() {
+        getPresenter().view = this
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super<ActionBarActivity>.onCreate(savedInstanceState)
+    override fun getPresenterClass() : Class<MainPresenterImpl> = javaClass()
+
+    val titleView : TextView by bindView(R.id.title)
+
+    override fun populatePage(currentMeh : CurrentMeh) {
+        titleView.setText(currentMeh.deal.title)
+    }
+
+    override fun onCreate(savedInstanceState : Bundle?) {
+        super<BaseActivity>.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mehService = RestAdapter.Builder()
-                .setEndpoint(MehService.ENDPOINT_URL + MehService.ENDPOINT_VERSION)
-                .build().create(javaClass<MehService>());
+        getPresenter().getCurrentMeh()
     }
 }

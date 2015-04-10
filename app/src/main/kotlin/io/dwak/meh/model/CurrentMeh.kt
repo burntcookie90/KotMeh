@@ -3,81 +3,81 @@ package io.dwak.meh.model
 import java.util.ArrayList
 
 public class CurrentMeh (
-        private val deal : Deal,
-        private val poll : Poll,
-        private val video : Video) {
+        val deal : Deal,
+        val poll : Poll,
+        val video : Video) {
 
 }
 
 class Deal (
-        private val feautures : String,
-        private val id : String,
-        private val items : List<Item>,
-        private val photos : List<String>,
-        private val title : String,
-        private val soldOutAt : String,
-        private val specifications : String,
-        private val story : Story,
-        private val theme : Theme,
-        private val url : String,
-        private val topic : Topic) {
+        val feautures : String,
+        val id : String,
+        val items : List<Item>,
+        val photos : List<String>,
+        val title : String,
+        val soldOutAt : String,
+        val specifications : String,
+        val story : Story,
+        val theme : Theme,
+        val url : String,
+        val topic : Topic) {
 
 }
 
 class Topic(
-        private val commentCount : Int,
-        private val createdAt : String,
-        private val id : String,
-        private val replyCount : Int,
-        private val url : String,
-        private val voteCount : Int) {
+        val commentCount : Int,
+        val createdAt : String,
+        val id : String,
+        val replyCount : Int,
+        val url : String,
+        val voteCount : Int) {
 
 }
 
 class Theme(
-        private val accentColor : String,
-        private val foreground : String,
-        private val backgroundColor : String,
-        private val backgroundImage : String) {
+        val accentColor : String,
+        val foreground : String,
+        val backgroundColor : String,
+        val backgroundImage : String) {
 
 }
 
 class Story(
-        private val title : String,
-        private val body : String) {
+        val title : String,
+        val body : String) {
 
 }
 
 class Item(
-        private val attributes : List<Any>,
-        private val condition : String,
-        private val id : String,
-        private val price : Int,
-        private val photo : String) {
+        val attributes : List<Any>,
+        val condition : String,
+        val id : String,
+        val price : Int,
+        val photo : String) {
 
 }
 
 class Poll(
-        private val answers : List<Answer>,
-        private val id : String,
-        private val startDate : String,
-        private val title : String,
-        private val topic : Topic) {
+        val answers : List<Answer>,
+        val id : String,
+        val startDate : String,
+        val title : String,
+        val topic : Topic) {
 
 }
 
 class Answer(
-        private val id : String,
-        private val text : String,
-        private val voteCount : Int) {
+        val id : String,
+        val text : String,
+        val voteCount : Int) {
 
 }
 
 class Video(
-        private val id : String,
-        private val startDate : String,
-        private val title : String,
-        private val url : String,
-        private val topic : Topic) {
+        val id : String,
+        val startDate : String,
+        val title : String,
+        val url : String,
+        val topic : Topic) {
 
 }

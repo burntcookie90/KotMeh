@@ -1,3 +1,12 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:0.11.91'
+    }
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
@@ -14,6 +23,11 @@ android {
         versionName "1.0"
     }
     buildTypes {
+        debug {
+            def Properties mehProps = new Properties()
+            mehProps.load(new FileInputStream(file('../meh.properties')))
+            buildConfigField "String", "API_KEY", mehProps.getProperty("api_key")
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
