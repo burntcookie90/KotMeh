@@ -1,7 +1,9 @@
-package io.dwak.meh
+package io.dwak.meh.presenter
 
-import io.dwak.meh.network.MehService
-import retrofit.RestAdapter
+import io.dwak.meh.interactor.CurrentMehInteractor
+import io.dwak.meh.interactor.CurrentMehInteractorImpl
+import io.dwak.meh.base.BasePresenter
+import io.dwak.meh.view.MainView
 import rx.android.schedulers.AndroidSchedulers
 import rx.functions.Action1
 import rx.schedulers.Schedulers

@@ -1,7 +1,6 @@
-package io.dwak.meh
+package io.dwak.meh.base
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.app.ActionBarActivity
 
 /**

@@ -1,6 +1,6 @@
-package io.dwak.meh
+package io.dwak.meh.interactor
 
-import io.dwak.meh.model.CurrentMeh
+import io.dwak.meh.model.Meh
 import io.dwak.meh.network.MehService
 import retrofit.RestAdapter
 import rx.Observable
@@ -18,7 +18,7 @@ public class CurrentMehInteractorImpl : CurrentMehInteractor{
                 .build()
                 .create(javaClass<MehService>());
     }
-    override fun getCurrentMeh() : Observable<CurrentMeh> {
+    override fun getCurrentMeh() : Observable<Meh> {
         return mehService.getCurrentMeh(MehService.API_KEY)
     }
 }

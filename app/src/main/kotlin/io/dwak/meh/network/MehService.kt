@@ -1,7 +1,7 @@
 package io.dwak.meh.network
 
 import io.dwak.meh.BuildConfig
-import io.dwak.meh.model.CurrentMeh
+import io.dwak.meh.model.Meh
 import retrofit.http.GET
 import retrofit.http.Query
 import rx.Observable
@@ -13,5 +13,5 @@ public trait MehService {
         public val API_KEY : String = BuildConfig.API_KEY;
     }
     GET("/current.json")
-    public fun getCurrentMeh(Query("apikey") apiKey : String) : Observable<CurrentMeh>
+    public fun getCurrentMeh(Query("apikey") apiKey : String) : Observable<Meh>
 }
