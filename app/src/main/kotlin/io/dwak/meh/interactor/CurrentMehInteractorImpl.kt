@@ -16,7 +16,7 @@ public class CurrentMehInteractorImpl : CurrentMehInteractor{
                 .setEndpoint(MehService.ENDPOINT_URL + MehService.ENDPOINT_VERSION)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build()
-                .create(javaClass<MehService>());
+                .create(javaClass<MehService>())
     }
     override fun getCurrentMeh() : Observable<Meh> {
         return mehService.getCurrentMeh(MehService.API_KEY)

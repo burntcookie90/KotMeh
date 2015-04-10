@@ -22,6 +22,6 @@ public class MainPresenterImpl : BasePresenter<MainView>, MainPresenter {
         currentMehInteractor.getCurrentMeh()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(Action1 { view!!.populatePage(it) })
+                .subscribe(Action1 { view.populatePage(it) })
     }
 }

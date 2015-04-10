@@ -44,6 +44,9 @@ dependencies {
     compile 'io.reactivex:rxandroid:0.24.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.github.johnkil.android-robototextview:robototextview:2.3.0'
-    compile 'com.commonsware.cwac:anddown:0.2.+'
+    compile 'com.commonsware.cwac:anddown:0.2.4'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'org.jetbrains.anko:anko:0.5-15s'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.daimajia.slider:library:1.1.2@aar'
 }

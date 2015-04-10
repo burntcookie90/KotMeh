@@ -12,6 +12,7 @@ public trait MehService {
         public val ENDPOINT_VERSION : String = "/1";
         public val API_KEY : String = BuildConfig.API_KEY;
     }
+
     GET("/current.json")
     public fun getCurrentMeh(Query("apikey") apiKey : String) : Observable<Meh>
 }
