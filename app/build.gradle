@@ -47,6 +47,4 @@ dependencies {
     compile 'com.commonsware.cwac:anddown:0.2.4'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'org.jetbrains.anko:anko:0.5-15s'
-    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.daimajia.slider:library:1.1.2@aar'
 }

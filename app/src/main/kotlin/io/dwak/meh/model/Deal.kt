@@ -13,4 +13,6 @@ class Deal (
         val url : String,
         val topic : Topic) {
 
+    var formattedPriceString : String? = null
+
 }

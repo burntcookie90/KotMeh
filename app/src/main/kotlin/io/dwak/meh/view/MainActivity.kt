@@ -1,16 +1,16 @@
 package io.dwak.meh.view
 
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.View
-import android.view.ViewManager
+import android.widget.Button
 import android.widget.TextView
-import com.daimajia.slider.library.SliderLayout
-import com.daimajia.slider.library.SliderTypes.DefaultSliderView
 import io.dwak.meh.base.BaseActivity
 import io.dwak.meh.model.Meh
 import io.dwak.meh.presenter.MainPresenterImpl
 import kotlinx.android.anko.*
+import kotlin.properties.Delegates
 
 class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
     override fun setView() {
@@ -19,55 +19,68 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
 
     override fun getPresenterClass() : Class<MainPresenterImpl> = javaClass()
 
-    var titleView : TextView? = null
-    var storyView : TextView? = null
-    var rootView : View? = null
-    var viewPager : ViewPager? = null
-    var sliderLayout : SliderLayout? = null
+    private var titleView : TextView by Delegates.notNull()
+    private var storyView : TextView by Delegates.notNull()
+    private var rootView : View by Delegates.notNull()
+    private var viewPager : ViewPager by Delegates.notNull()
+    private var buyButton : Button by Delegates.notNull()
+    val imagePagerAdapter = ImagePagerAdapter(this)
 
     override fun populatePage(currentMeh : Meh) {
-        titleView?.setText(currentMeh.deal.title)
-        storyView?.setText(currentMeh.deal.story.getFormattedBody())
-        rootView?.setBackgroundColor(currentMeh.deal.theme.getParsedBackgroundColor())
-        currentMeh.deal.photos.forEach {
-            val sliderView = DefaultSliderView(this)
-            sliderView.image(it)
-            sliderLayout?.addSlider(sliderView)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            getWindow().setStatusBarColor(currentMeh.deal.theme.getParsedAccentColor())
         }
+        titleView.text = currentMeh.deal.title
+        titleView.textColor = currentMeh.deal.theme.getParsedAccentColor()
+        storyView.text = currentMeh.deal.story.getFormattedBody()
+        when(currentMeh.deal.theme.foreground) {
+            "dark" -> {
+                storyView.textColor = getResources().getColor(android.R.color.black)
+            }
+            "light" -> {
+                storyView.textColor = getResources().getColor(android.R.color.white)
+            }
+        }
+        rootView.backgroundColor = currentMeh.deal.theme.getParsedBackgroundColor()
+        imagePagerAdapter.imageUrls = currentMeh.deal.photos
+        imagePagerAdapter.notifyDataSetChanged()
+        buyButton.text = "${currentMeh.deal.formattedPriceString}\nBuy it"
+        buyButton.backgroundColor = currentMeh.deal.theme.getParsedAccentColor()
+        buyButton.textColor = currentMeh.deal.theme.getParsedBackgroundColor()
     }
+
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super<BaseActivity>.onCreate(savedInstanceState)
         getLayout()
+        viewPager.adapter = imagePagerAdapter
         presenter.getCurrentMeh()
     }
+
 
     private fun getLayout() {
         rootView = scrollView {
             verticalLayout {
                 padding = dip(16)
 
-                sliderLayout = sliderLayout {
+                viewPager = viewPager {
 
-                }.layoutParams(width = matchParent, height = dip(300))
+                }.layoutParams(width = matchParent, height = dip(400)) {}
 
-                titleView = textView("Hello") {
+                buyButton = button().layoutParams(width = matchParent, height = wrapContent)
+
+                titleView = textView {
                     textSize = 24f
-                }.layoutParams(width = matchParent, height = matchParent){
+                }.layoutParams(width = matchParent, height = matchParent) {
                     bottomMargin = dip(8)
                 }
 
-                storyView = textView("Story") {
+                storyView = textView {
 
                 }
 
-                button("Say Hello") {
-                    onClick { toast("Hello, Test!") }
-                }
             }
         }
     }
 
-    fun ViewManager.sliderLayout(init: SliderLayout.() -> Unit = {}) =
-            __dslAddView({SliderLayout(it)}, init, this)
 }
