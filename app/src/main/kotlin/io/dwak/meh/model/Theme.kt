@@ -8,12 +8,13 @@ class Theme(
         private val backgroundColor : String,
         val backgroundImage : String) {
 
-    fun getParsedAccentColor() : Int {
-        return Color.parseColor(accentColor)
+    public companion object {
+        public val FOREGROUND_DARK : String = "dark"
+        public val FOREGROUND_LIGHT : String = "light"
     }
 
-    fun getParsedBackgroundColor() : Int {
-        return Color.parseColor(backgroundColor)
-    }
+    val parsedAccentColor : Int = Color.parseColor(accentColor)
+
+    val parsedBackgroundColor : Int = Color.parseColor(backgroundColor)
 
 }

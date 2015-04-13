@@ -1,5 +1,7 @@
 package io.dwak.meh.model
 
+import kotlin.properties.Delegates
+
 class Deal (
         val feautures : String,
         val id : String,
@@ -13,6 +15,24 @@ class Deal (
         val url : String,
         val topic : Topic) {
 
-    var formattedPriceString : String? = null
+    val formattedPriceString : String by Delegates.lazy {
+        var lowestPrice : Int = Int.MAX_VALUE
+        var highestPrice : Int = Int.MIN_VALUE
+        items.forEach {
+            if (it.price > highestPrice) {
+                highestPrice = it.price
+            }
+            if (it.price < lowestPrice) {
+                lowestPrice = it.price
+            }
+        }
+
+        if (lowestPrice == highestPrice) {
+            "$${lowestPrice}"
+        }
+        else {
+            "$${lowestPrice} - $${highestPrice}"
+        }
+    }
 
 }

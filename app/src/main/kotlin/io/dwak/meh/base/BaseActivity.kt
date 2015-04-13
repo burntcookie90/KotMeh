@@ -10,10 +10,10 @@ import kotlin.properties.Delegates
  */
 public abstract class BaseActivity<T : BasePresenter<*>> : ActionBarActivity() {
     val presenter : T by Delegates.lazy {
-        getPresenterClass().newInstance()
+        getPresenterClass.newInstance()
     }
 
-    abstract fun getPresenterClass() : Class<T>
+    abstract val getPresenterClass : Class<T>
     abstract fun setView()
 
     override fun onCreate(savedInstanceState : Bundle?) {

@@ -14,5 +14,5 @@ public trait MehService {
     }
 
     GET("/current.json")
-    public fun getCurrentMeh(Query("apikey") apiKey : String) : Observable<Meh>
+    public fun getCurrentMeh(Query("apikey") apiKey : String = API_KEY) : Observable<Meh>
 }

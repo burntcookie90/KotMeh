@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import io.dwak.meh.base.BaseActivity
 import io.dwak.meh.model.Meh
+import io.dwak.meh.model.Theme
 import io.dwak.meh.presenter.MainPresenterImpl
 import kotlinx.android.anko.*
 import kotlin.properties.Delegates
@@ -17,36 +18,33 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
         presenter.view = this
     }
 
-    override fun getPresenterClass() : Class<MainPresenterImpl> = javaClass()
+    override val getPresenterClass : Class<MainPresenterImpl> = javaClass()
 
     private var titleView : TextView by Delegates.notNull()
     private var storyView : TextView by Delegates.notNull()
     private var rootView : View by Delegates.notNull()
     private var viewPager : ViewPager by Delegates.notNull()
     private var buyButton : Button by Delegates.notNull()
-    val imagePagerAdapter = ImagePagerAdapter(this)
+    private val imagePagerAdapter = ImagePagerAdapter(this)
 
     override fun populatePage(currentMeh : Meh) {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            getWindow().setStatusBarColor(currentMeh.deal.theme.getParsedAccentColor())
-        }
         titleView.text = currentMeh.deal.title
-        titleView.textColor = currentMeh.deal.theme.getParsedAccentColor()
-        storyView.text = currentMeh.deal.story.getFormattedBody()
-        when(currentMeh.deal.theme.foreground) {
-            "dark" -> {
+        titleView.textColor = currentMeh.deal.theme.parsedAccentColor
+        storyView.text = currentMeh.deal.story.formattedBody
+        when (currentMeh.deal.theme.foreground) {
+            Theme.FOREGROUND_DARK  -> {
                 storyView.textColor = getResources().getColor(android.R.color.black)
             }
-            "light" -> {
+            Theme.FOREGROUND_LIGHT -> {
                 storyView.textColor = getResources().getColor(android.R.color.white)
             }
         }
-        rootView.backgroundColor = currentMeh.deal.theme.getParsedBackgroundColor()
+        rootView.backgroundColor = currentMeh.deal.theme.parsedBackgroundColor
         imagePagerAdapter.imageUrls = currentMeh.deal.photos
         imagePagerAdapter.notifyDataSetChanged()
         buyButton.text = "${currentMeh.deal.formattedPriceString}\nBuy it"
-        buyButton.backgroundColor = currentMeh.deal.theme.getParsedAccentColor()
-        buyButton.textColor = currentMeh.deal.theme.getParsedBackgroundColor()
+        buyButton.backgroundColor = currentMeh.deal.theme.parsedAccentColor
+        buyButton.textColor = currentMeh.deal.theme.parsedBackgroundColor
     }
 
 
@@ -67,11 +65,14 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
 
                 }.layoutParams(width = matchParent, height = dip(400)) {}
 
-                buyButton = button().layoutParams(width = matchParent, height = wrapContent)
+                buyButton = button().layoutParams(width = matchParent,
+                                                  height = wrapContent)
 
                 titleView = textView {
                     textSize = 24f
-                }.layoutParams(width = matchParent, height = matchParent) {
+                }.layoutParams(width = matchParent,
+                               height = matchParent) {
+                    topMargin = dip(8)
                     bottomMargin = dip(8)
                 }
 
