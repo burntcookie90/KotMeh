@@ -70,7 +70,6 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
     }
 
 
-
     private fun getLayout() {
         rootView = scrollView {
             verticalLayout {
@@ -99,7 +98,7 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
                 }
 
                 specificationsView = textView().layoutParams(width = matchParent,
-                                        height = wrapContent) {
+                                                             height = wrapContent) {
                     topMargin = dip(8)
                 }
 
