@@ -1,6 +1,9 @@
 package io.dwak.meh.model
 
 import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
+import android.graphics.drawable.ColorDrawable
 
 class Theme(
         private val accentColor : String,
@@ -13,8 +16,20 @@ class Theme(
         public val FOREGROUND_LIGHT : String = "light"
     }
 
-    val parsedAccentColor : Int = Color.parseColor(accentColor)
+    fun getPressedAccentColorDrawable() : ColorDrawable {
+        val accentColor = Color.parseColor(accentColor)
+        val accentColorDrawable = ColorDrawable(accentColor)
+        val filter = PorterDuffColorFilter(accentColor, PorterDuff.Mode.MULTIPLY)
+        accentColorDrawable.setColorFilter(filter)
+        return accentColorDrawable
+    }
 
-    val parsedBackgroundColor : Int = Color.parseColor(backgroundColor)
+    fun getParsedAccentColor() : Int {
+        return Color.parseColor(accentColor)
+    }
+
+    fun getParsedBackgroundColor() : Int {
+        return Color.parseColor(backgroundColor)
+    }
 
 }

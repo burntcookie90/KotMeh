@@ -8,9 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
 
-/**
- * Created by vishnu on 4/11/15.
- */
 public class ImagePagerAdapter(context : Context) : PagerAdapter(){
     private val context : Context;
     var imageUrls : List<String>? = null

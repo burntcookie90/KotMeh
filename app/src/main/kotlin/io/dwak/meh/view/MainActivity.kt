@@ -1,5 +1,7 @@
 package io.dwak.meh.view
 
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.StateListDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.view.ViewPager
@@ -18,19 +20,23 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
         presenter.view = this
     }
 
-    override val getPresenterClass : Class<MainPresenterImpl> = javaClass()
+    override val presenterClass : Class<MainPresenterImpl> = javaClass()
 
     private var titleView : TextView by Delegates.notNull()
     private var storyView : TextView by Delegates.notNull()
     private var rootView : View by Delegates.notNull()
     private var viewPager : ViewPager by Delegates.notNull()
     private var buyButton : Button by Delegates.notNull()
+    private var specificationsView : TextView by Delegates.notNull()
     private val imagePagerAdapter = ImagePagerAdapter(this)
 
     override fun populatePage(currentMeh : Meh) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(currentMeh.deal.theme.getParsedAccentColor());
+        }
         titleView.text = currentMeh.deal.title
-        titleView.textColor = currentMeh.deal.theme.parsedAccentColor
-        storyView.text = currentMeh.deal.story.formattedBody
+        titleView.textColor = currentMeh.deal.theme.getParsedAccentColor()
+        storyView.text = currentMeh.deal.story.getFormattedBody()
         when (currentMeh.deal.theme.foreground) {
             Theme.FOREGROUND_DARK  -> {
                 storyView.textColor = getResources().getColor(android.R.color.black)
@@ -39,12 +45,20 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
                 storyView.textColor = getResources().getColor(android.R.color.white)
             }
         }
-        rootView.backgroundColor = currentMeh.deal.theme.parsedBackgroundColor
+        rootView.backgroundColor = currentMeh.deal.theme.getParsedBackgroundColor()
         imagePagerAdapter.imageUrls = currentMeh.deal.photos
         imagePagerAdapter.notifyDataSetChanged()
-        buyButton.text = "${currentMeh.deal.formattedPriceString}\nBuy it"
-        buyButton.backgroundColor = currentMeh.deal.theme.parsedAccentColor
-        buyButton.textColor = currentMeh.deal.theme.parsedBackgroundColor
+
+        val stateListDrawable : StateListDrawable = StateListDrawable()
+        stateListDrawable.addState(intArray(android.R.attr.state_pressed), currentMeh.deal.theme.getPressedAccentColorDrawable())
+        stateListDrawable.addState(intArray(), ColorDrawable(currentMeh.deal.theme.getParsedAccentColor()))
+
+        buyButton.text = "${currentMeh.deal.getFormattedPriceString()}\nBuy it"
+        buyButton.background = stateListDrawable
+        buyButton.textColor = currentMeh.deal.theme.getParsedBackgroundColor()
+        buyButton.setOnClickListener { browse(currentMeh.deal.url) }
+
+        specificationsView.text = currentMeh.deal.getFormattedSpecifications()
     }
 
 
@@ -56,28 +70,37 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
     }
 
 
+
     private fun getLayout() {
         rootView = scrollView {
             verticalLayout {
                 padding = dip(16)
 
-                viewPager = viewPager {
+                viewPager = viewPager().layoutParams(width = matchParent, height = dip(400))
 
-                }.layoutParams(width = matchParent, height = dip(400)) {}
-
-                buyButton = button().layoutParams(width = matchParent,
-                                                  height = wrapContent)
+                buyButton = button().layoutParams(width = matchParent, height = wrapContent)
 
                 titleView = textView {
                     textSize = 24f
                 }.layoutParams(width = matchParent,
-                               height = matchParent) {
+                               height = wrapContent) {
                     topMargin = dip(8)
                     bottomMargin = dip(8)
                 }
 
-                storyView = textView {
+                storyView = textView()
 
+                textView {
+                    textSize = 20f
+                    text = "Specifications"
+                }.layoutParams(width = matchParent,
+                               height = wrapContent) {
+                    topMargin = dip(8)
+                }
+
+                specificationsView = textView().layoutParams(width = matchParent,
+                                        height = wrapContent) {
+                    topMargin = dip(8)
                 }
 
             }

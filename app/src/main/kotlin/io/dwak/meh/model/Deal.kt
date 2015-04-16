@@ -1,6 +1,8 @@
 package io.dwak.meh.model
 
-import kotlin.properties.Delegates
+import android.text.Html
+import android.text.Spanned
+import com.commonsware.cwac.anddown.AndDown
 
 class Deal (
         val feautures : String,
@@ -15,7 +17,9 @@ class Deal (
         val url : String,
         val topic : Topic) {
 
-    val formattedPriceString : String by Delegates.lazy {
+    fun getFormattedSpecifications() : Spanned = Html.fromHtml(AndDown().markdownToHtml(specifications))
+
+    fun getFormattedPriceString() : String {
         var lowestPrice : Int = Int.MAX_VALUE
         var highestPrice : Int = Int.MIN_VALUE
         items.forEach {
@@ -27,7 +31,7 @@ class Deal (
             }
         }
 
-        if (lowestPrice == highestPrice) {
+        return if (lowestPrice == highestPrice) {
             "$${lowestPrice}"
         }
         else {
