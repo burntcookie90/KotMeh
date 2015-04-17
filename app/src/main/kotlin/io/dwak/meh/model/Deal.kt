@@ -17,7 +17,7 @@ class Deal (
         val url : String,
         val topic : Topic) {
 
-    fun getFormattedSpecifications() : Spanned = Html.fromHtml(AndDown().markdownToHtml(specifications))
+    fun getFormattedSpecifications() : Spanned = specifications.toSpannedFromMarkdown()
 
     fun getFormattedPriceString() : String {
         var lowestPrice : Int = Int.MAX_VALUE
@@ -39,4 +39,8 @@ class Deal (
         }
     }
 
+}
+
+fun String.toSpannedFromMarkdown() : Spanned {
+    return Html.fromHtml(AndDown().markdownToHtml(this))
 }

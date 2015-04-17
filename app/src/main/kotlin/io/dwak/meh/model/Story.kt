@@ -8,6 +8,6 @@ class Story(
         val title : String,
         val body : String) {
 
-    fun getFormattedBody() : Spanned = Html.fromHtml(AndDown().markdownToHtml(body))
+    fun getFormattedBody() : Spanned = body.toSpannedFromMarkdown()
 
 }

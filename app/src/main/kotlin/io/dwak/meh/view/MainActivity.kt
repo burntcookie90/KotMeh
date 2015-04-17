@@ -5,6 +5,7 @@ import android.graphics.drawable.StateListDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.view.ViewPager
+import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -65,7 +66,11 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
     override fun onCreate(savedInstanceState : Bundle?) {
         super<BaseActivity>.onCreate(savedInstanceState)
         getLayout()
+
+        storyView.movementMethod = LinkMovementMethod.getInstance()
+        specificationsView.movementMethod = LinkMovementMethod.getInstance()
         viewPager.adapter = imagePagerAdapter
+
         presenter.getCurrentMeh()
     }
 
