@@ -6,9 +6,9 @@ import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.ColorDrawable
 
 class Theme(
-        private val accentColor : String,
+        val accentColor : String,
         val foreground : String,
-        private val backgroundColor : String,
+        val backgroundColor : String,
         val backgroundImage : String) {
 
     public companion object {
