@@ -24,12 +24,8 @@ class Theme(
         return accentColorDrawable
     }
 
-    fun getParsedAccentColor() : Int {
-        return Color.parseColor(accentColor)
-    }
+    fun getParsedAccentColor() : Int = Color.parseColor(accentColor)
 
-    fun getParsedBackgroundColor() : Int {
-        return Color.parseColor(backgroundColor)
-    }
+    fun getParsedBackgroundColor() : Int = Color.parseColor(backgroundColor)
 
 }
