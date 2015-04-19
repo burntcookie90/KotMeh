@@ -17,4 +17,4 @@ You'll also need to copy `meh.properties.example` into `meh.properties` and plac
 
 ###Download
 
-You can download the apk [here](https://github.com/burntcookie90/KotMeh/releases/tag/0.1)
+You can download the apk [here](https://github.com/burntcookie90/KotMeh/releases/tag/0.1.1)
