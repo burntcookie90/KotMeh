@@ -6,7 +6,7 @@ import com.commonsware.cwac.anddown.AndDown
 import io.dwak.meh.toSpannedFromMarkdown
 
 class Deal (
-        val feautures : String,
+        val features : String,
         val id : String,
         val items : List<Item>,
         val photos : List<String>,
@@ -19,6 +19,8 @@ class Deal (
         val topic : Topic) {
 
     fun getFormattedSpecifications() : Spanned = specifications.toSpannedFromMarkdown()
+
+    fun getFormattedFeatues() : Spanned = features.toSpannedFromMarkdown()
 
     fun getFormattedPriceString() : String {
         var lowestPrice : Int = Int.MAX_VALUE
