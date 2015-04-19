@@ -30,11 +30,13 @@ class Theme(
     fun getParsedBackgroundColor() : Int = Color.parseColor(expandColor(backgroundColor))
 
     fun expandColor(colorString : String) : String {
-        return if (colorString.length() <= 4) {
-            "${colorString[0]}${colorString[1]}${colorString[1]}${colorString[2]}${colorString[2]}${colorString[3]}${colorString[3]}"
-        }
-        else {
-            colorString
+        return when (colorString.length()) {
+            4 -> {
+                "${colorString[0]}${colorString[1]}${colorString[1]}${colorString[2]}${colorString[2]}${colorString[3]}${colorString[3]}"
+            }
+            else    -> {
+                colorString
+            }
         }
     }
 }

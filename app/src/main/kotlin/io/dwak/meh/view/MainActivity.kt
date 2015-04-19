@@ -96,6 +96,7 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
 
         specificationsView.text = currentMeh.deal.getFormattedSpecifications()
 
+        featuresExpansionButton.visibility = View.VISIBLE
         featuresTextView.text = currentMeh.deal.getFormattedFeatues()
     }
 
@@ -120,7 +121,9 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
                 viewPager = viewPager().layoutParams(width = matchParent,
                                                      height = dip(400))
 
-                buyButton = button().layoutParams(width = matchParent,
+                buyButton = button{
+                    text = "Loading..."
+                }.layoutParams(width = matchParent,
                                                   height = wrapContent)
 
                 titleView = textView {
@@ -141,6 +144,7 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
 
                 featuresExpansionButton = horizontalLayout {
                     weightSum = 10.0f
+                    visibility = View.GONE
                     onClick({
                                 when (featuresContainer.visibility) {
                                     View.VISIBLE -> {
