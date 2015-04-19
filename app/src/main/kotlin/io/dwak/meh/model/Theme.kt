@@ -4,7 +4,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.ColorDrawable
-import kotlin.test.assertEquals
+import rx.Observable
 
 class Theme(
         val accentColor : String,
@@ -30,17 +30,11 @@ class Theme(
     fun getParsedBackgroundColor() : Int = Color.parseColor(expandColor(backgroundColor))
 
     fun expandColor(colorString : String) : String {
-        if(colorString.length() <= 4){
-            var color = colorString.substring(1, colorString.length())
-            var newString = "";
-            for (i in color) {
-                newString+=i;
-                newString+=i;
-            }
-            return "#${newString}"
+        return if (colorString.length() <= 4) {
+            "${colorString[0]}${colorString[1]}${colorString[1]}${colorString[2]}${colorString[2]}${colorString[3]}${colorString[3]}"
         }
         else {
-            return colorString
+            colorString
         }
     }
 }
