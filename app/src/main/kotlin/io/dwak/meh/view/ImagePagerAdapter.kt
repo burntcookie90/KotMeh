@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
+import io.dwak.meh.loadImage
 
 public class ImagePagerAdapter(context : Context) : PagerAdapter(){
     private val context : Context;
@@ -19,7 +20,7 @@ public class ImagePagerAdapter(context : Context) : PagerAdapter(){
     override fun instantiateItem(container : ViewGroup?, position : Int) : Any? {
         val imageView  = ImageView(context)
         if(imageUrls?.get(position) !== null){
-            Picasso.with(context).load(imageUrls?.get(position)).into(imageView)
+            context.loadImage(imageUrls?.get(position)!!, imageView)
             (container as ViewPager).addView(imageView)
         }
         else {

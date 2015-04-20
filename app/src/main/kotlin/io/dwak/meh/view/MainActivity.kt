@@ -18,6 +18,7 @@ import io.dwak.meh.R
 import io.dwak.meh.animateLayoutChanges
 import io.dwak.meh.base.BaseActivity
 import io.dwak.meh.horizontalLayout
+import io.dwak.meh.loadImage
 import io.dwak.meh.model.Meh
 import io.dwak.meh.model.Theme
 import io.dwak.meh.presenter.MainPresenterImpl
@@ -61,18 +62,19 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
                 expansionArrowImage.imageResource = R.drawable.ic_action_expand_more_white
             }
         }
-        //        rootView.backgroundColor = currentMeh.deal.theme.getParsedBackgroundColor()
-        Picasso.with(this).load(currentMeh.deal.theme.backgroundImage).into(object : Target {
-            override fun onPrepareLoad(placeHolderDrawable : Drawable?) {
-            }
+        loadImage(url = currentMeh.deal.theme.backgroundImage,
+                  target = object : Target {
+                      override fun onPrepareLoad(placeHolderDrawable : Drawable?) {
+                      }
 
-            override fun onBitmapFailed(errorDrawable : Drawable?) {
-            }
+                      override fun onBitmapFailed(errorDrawable : Drawable?) {
+                      }
 
-            override fun onBitmapLoaded(bitmap : Bitmap?, from : Picasso.LoadedFrom?) {
-                container.setBackground(BitmapDrawable(getResources(), bitmap))
-            }
-        })
+                      override fun onBitmapLoaded(bitmap : Bitmap?, from : Picasso.LoadedFrom?) {
+                          container.setBackground(BitmapDrawable(getResources(), bitmap))
+                      }
+
+                  })
         imagePagerAdapter.imageUrls = currentMeh.deal.photos
         imagePagerAdapter.notifyDataSetChanged()
 
@@ -97,7 +99,7 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
         specificationsView.text = currentMeh.deal.getFormattedSpecifications()
 
         featuresExpansionButton.visibility = View.VISIBLE
-        featuresTextView.text = currentMeh.deal.getFormattedFeatues()
+        featuresTextView.text = currentMeh.deal.getFormattedFeatures()
     }
 
 
@@ -121,10 +123,10 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
                 viewPager = viewPager().layoutParams(width = matchParent,
                                                      height = dip(400))
 
-                buyButton = button{
+                buyButton = button {
                     text = "Loading..."
                 }.layoutParams(width = matchParent,
-                                                  height = wrapContent)
+                               height = wrapContent)
 
                 titleView = textView {
                     textSize = 24f

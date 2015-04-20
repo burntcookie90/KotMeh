@@ -3,7 +3,7 @@ package io.dwak.meh.model
 import android.text.Html
 import android.text.Spanned
 import com.commonsware.cwac.anddown.AndDown
-import io.dwak.meh.toSpannedFromMarkdown
+import io.dwak.meh.markdownToSpanned
 
 class Deal (
         val features : String,
@@ -18,9 +18,9 @@ class Deal (
         val url : String,
         val topic : Topic) {
 
-    fun getFormattedSpecifications() : Spanned = specifications.toSpannedFromMarkdown()
+    fun getFormattedSpecifications() : Spanned = AndDown().markdownToSpanned(specifications)
 
-    fun getFormattedFeatues() : Spanned = features.toSpannedFromMarkdown()
+    fun getFormattedFeatures() : Spanned = AndDown().markdownToSpanned(features)
 
     fun getFormattedPriceString() : String {
         var lowestPrice : Int = Int.MAX_VALUE
