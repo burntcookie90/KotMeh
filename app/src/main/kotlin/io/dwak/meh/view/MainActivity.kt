@@ -32,6 +32,8 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
 
     override val presenterClass : Class<MainPresenterImpl> = javaClass()
 
+    private var shareButton : ImageButton by Delegates.notNull()
+    private var backgroundImage : ImageView by Delegates.notNull()
     private var rootView : View by Delegates.notNull()
     private var container : View by Delegates.notNull()
     private var titleView : TextView by Delegates.notNull()
@@ -56,25 +58,20 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
             Theme.FOREGROUND_DARK  -> {
                 storyView.textColor = getResources().getColor(android.R.color.black)
                 expansionArrowImage.imageResource = R.drawable.ic_action_expand_more
+                shareButton.imageResource = R.drawable.ic_action_share_black
             }
             Theme.FOREGROUND_LIGHT -> {
                 storyView.textColor = getResources().getColor(android.R.color.white)
                 expansionArrowImage.imageResource = R.drawable.ic_action_expand_more_white
+                shareButton.imageResource = R.drawable.ic_action_share_white
             }
         }
-        loadImage(url = currentMeh.deal.theme.backgroundImage,
-                  target = object : Target {
-                      override fun onPrepareLoad(placeHolderDrawable : Drawable?) {
-                      }
 
-                      override fun onBitmapFailed(errorDrawable : Drawable?) {
-                      }
+        Picasso.with(this)
+                .load(currentMeh.deal.theme.backgroundImage)
+                .fit()
+                .into(backgroundImage)
 
-                      override fun onBitmapLoaded(bitmap : Bitmap?, from : Picasso.LoadedFrom?) {
-                          container.setBackground(BitmapDrawable(getResources(), bitmap))
-                      }
-
-                  })
         imagePagerAdapter.imageUrls = currentMeh.deal.photos
         imagePagerAdapter.notifyDataSetChanged()
 
@@ -83,6 +80,12 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
         stateListDrawable.addState(intArray(android.R.attr.state_enabled, android.R.attr.state_pressed), currentMeh.deal.theme.getPressedAccentColorDrawable())
         stateListDrawable.addState(intArray(), ColorDrawable(currentMeh.deal.theme.getParsedAccentColor()))
 
+        val shareDrawable = StateListDrawable()
+        shareDrawable.addState(intArray(-android.R.attr.state_enabled), currentMeh.deal.theme.getPressedAccentColorDrawable())
+        shareDrawable.addState(intArray(android.R.attr.state_enabled, android.R.attr.state_pressed), currentMeh.deal.theme.getPressedAccentColorDrawable())
+        shareDrawable.addState(intArray(), ColorDrawable(currentMeh.deal.theme.getParsedAccentColor()))
+
+
         if (!TextUtils.isEmpty(currentMeh.deal.soldOutAt)) {
             buyButton.enabled = false
             buyButton.text = "Sold out"
@@ -90,11 +93,14 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
         else {
             buyButton.enabled = true
             buyButton.text = "${currentMeh.deal.getFormattedPriceString()}\nBuy it"
-            buyButton.setOnClickListener { browse(currentMeh.deal.url) }
+            buyButton.onClick { browse(currentMeh.deal.url) }
         }
 
         buyButton.background = stateListDrawable
         buyButton.textColor = currentMeh.deal.theme.getParsedBackgroundColor()
+
+        shareButton.background = shareDrawable
+        shareButton.onClick { share("http://meh.com") }
 
         specificationsView.text = currentMeh.deal.getFormattedSpecifications()
 
@@ -115,72 +121,92 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
     }
 
 
+
     private fun getLayout() {
-        rootView = scrollView {
-            container = verticalLayout {
-                padding = dip(16)
+        rootView = relativeLayout {
+            backgroundImage = imageView().layoutParams(width = matchParent,
+                                                       height = matchParent)
+            container = scrollView {
+                backgroundColor = android.R.color.transparent
+                verticalLayout {
+                    padding = dip(16)
 
-                viewPager = viewPager().layoutParams(width = matchParent,
-                                                     height = dip(400))
+                    viewPager = viewPager().layoutParams(width = matchParent,
+                                                         height = dip(400))
 
-                buyButton = button {
-                    text = "Loading..."
-                }.layoutParams(width = matchParent,
-                               height = wrapContent)
+                    horizontalLayout {
+                        weightSum = 10.0f
 
-                titleView = textView {
-                    textSize = 24f
-                }.layoutParams(width = matchParent,
-                               height = wrapContent) {
-                    topMargin = dip(8)
-                    bottomMargin = dip(8)
-                }
-
-                storyView = textView()
-
-                specificationsView = textView()
-                        .layoutParams(width = matchParent,
-                                      height = wrapContent) {
-                            topMargin = dip(8)
+                        buyButton = button {
+                            text = "Loading..."
+                        }.layoutParams(width = dip(0),
+                                       height = matchParent){
+                            weight = 8.5f
+                            rightMargin = dip(2)
                         }
 
-                featuresExpansionButton = horizontalLayout {
-                    weightSum = 10.0f
-                    visibility = View.GONE
-                    onClick({
-                                when (featuresContainer.visibility) {
-                                    View.VISIBLE -> {
-                                        featuresContainer.visibility = View.GONE
-                                    }
-                                    View.GONE    -> {
-                                        featuresContainer.visibility = View.VISIBLE
-                                    }
-                                }
-                            })
+                        shareButton = imageButton().layoutParams(width = dip(0),
+                                                                 height = matchParent) {
+                            weight = 1.5f
+                            leftMargin = dip(2)
+                        }
+                    }.layoutParams(width = matchParent,
+                                   height = dip(52))
 
-                    textView {
-                        textSize = 20f
-                        text = "Features"
-                    }.layoutParams(width = dip(0),
-                                   height = matchParent) {
-                        weight = 9.0f
+                    titleView = textView {
+                        textSize = 24f
+                    }.layoutParams(width = matchParent,
+                                   height = wrapContent) {
+                        topMargin = dip(8)
+                        bottomMargin = dip(8)
                     }
 
-                    expansionArrowImage = imageView().layoutParams(width = dip(0),
-                                                                   height = matchParent) {
-                        weight = 1.0f
-                    }
-                }.layoutParams(width = matchParent,
-                               height = dip(48))
+                    storyView = textView()
 
-                featuresContainer = frameLayout {
-                    animateLayoutChanges = true
-                    visibility = View.GONE
-                    featuresTextView = textView()
-                }.layoutParams(width = matchParent,
-                               height = wrapContent)
+                    specificationsView = textView()
+                            .layoutParams(width = matchParent,
+                                          height = wrapContent) {
+                                topMargin = dip(8)
+                            }
+
+                    featuresExpansionButton = horizontalLayout {
+                        weightSum = 10.0f
+                        visibility = View.GONE
+                        onClick({
+                                    when (featuresContainer.visibility) {
+                                        View.VISIBLE -> {
+                                            featuresContainer.visibility = View.GONE
+                                        }
+                                        View.GONE    -> {
+                                            featuresContainer.visibility = View.VISIBLE
+                                        }
+                                    }
+                                })
+
+                        textView {
+                            textSize = 20f
+                            text = "Features"
+                        }.layoutParams(width = dip(0),
+                                       height = matchParent) {
+                            weight = 9.0f
+                        }
+
+                        expansionArrowImage = imageView().layoutParams(width = dip(0),
+                                                                       height = matchParent) {
+                            weight = 1.0f
+                        }
+                    }.layoutParams(width = matchParent,
+                                   height = dip(48))
+
+                    featuresContainer = frameLayout {
+                        animateLayoutChanges = true
+                        visibility = View.GONE
+                        featuresTextView = textView()
+                    }.layoutParams(width = matchParent,
+                                   height = wrapContent)
 
 
+                }
             }
         }
     }

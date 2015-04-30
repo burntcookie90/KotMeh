@@ -51,6 +51,6 @@ public var android.widget.FrameLayout.animateLayoutChanges : Boolean
  */
 public fun Activity.loadImage(url : String, imageView : ImageView) : Unit = Picasso.with(this).load(url).into(imageView)
 
-public fun Activity.loadImage(url : String, target : Target) : Unit = Picasso.with(this) .load(url) .into(target)
+public fun Activity.loadImage(url : String, target : Target) : Unit = Picasso.with(this).load(url).into(target)
 
 public fun Context.loadImage(url : String, imageView : ImageView) : Unit = Picasso.with(this).load(url).into(imageView)
