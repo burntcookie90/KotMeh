@@ -48,7 +48,7 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
     private var expansionArrowImage : ImageView by Delegates.notNull()
 
     override fun populatePage(currentMeh : Meh) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(currentMeh.deal.theme.getParsedAccentColor());
         }
         titleView.text = currentMeh.deal.title
