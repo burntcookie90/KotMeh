@@ -172,16 +172,16 @@ class MainActivity : BaseActivity<MainPresenterImpl>(), MainView {
                     featuresExpansionButton = horizontalLayout {
                         weightSum = 10.0f
                         visibility = View.GONE
-                        onClick({
-                                    when (featuresContainer.visibility) {
-                                        View.VISIBLE -> {
-                                            featuresContainer.visibility = View.GONE
-                                        }
-                                        View.GONE    -> {
-                                            featuresContainer.visibility = View.VISIBLE
-                                        }
-                                    }
-                                })
+                        onClick {
+                            when (featuresContainer.visibility) {
+                                View.VISIBLE -> {
+                                    featuresContainer.visibility = View.GONE
+                                }
+                                View.GONE    -> {
+                                    featuresContainer.visibility = View.VISIBLE
+                                }
+                            }
+                        }
 
                         textView {
                             textSize = 20f
